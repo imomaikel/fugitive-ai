@@ -1,12 +1,13 @@
-import { relations, sql } from "drizzle-orm";
-import { index, pgTable, primaryKey } from "drizzle-orm/pg-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import { type AdapterAccount } from 'next-auth/adapters';
+
+import { relations, sql } from 'drizzle-orm';
+import { index, pgTable, primaryKey } from 'drizzle-orm/pg-core';
 
 /******************/
 /***** Tables *****/
 /******************/
 
-export const users = pgTable("user", (d) => ({
+export const users = pgTable('user', (d) => ({
   id: d
     .varchar({ length: 255 })
     .notNull()
@@ -17,7 +18,7 @@ export const users = pgTable("user", (d) => ({
   image: d.varchar({ length: 255 }),
   emailVerified: d
     .timestamp({
-      mode: "date",
+      mode: 'date',
       withTimezone: true,
     })
     .default(sql`CURRENT_TIMESTAMP`),
@@ -26,7 +27,7 @@ export const users = pgTable("user", (d) => ({
 }));
 
 export const accounts = pgTable(
-  "account",
+  'account',
   (d) => ({
     userId: d
       .varchar({ length: 255 })
@@ -41,18 +42,15 @@ export const accounts = pgTable(
     access_token: d.text(),
     id_token: d.text(),
 
-    type: d.varchar({ length: 255 }).$type<AdapterAccount["type"]>().notNull(),
+    type: d.varchar({ length: 255 }).$type<AdapterAccount['type']>().notNull(),
     providerAccountId: d.varchar({ length: 255 }).notNull(),
     provider: d.varchar({ length: 255 }).notNull(),
   }),
-  (t) => [
-    primaryKey({ columns: [t.provider, t.providerAccountId] }),
-    index("account_user_id_idx").on(t.userId),
-  ],
+  (t) => [primaryKey({ columns: [t.provider, t.providerAccountId] }), index('account_user_id_idx').on(t.userId)],
 );
 
 export const sessions = pgTable(
-  "session",
+  'session',
   (d) => ({
     sessionToken: d.varchar({ length: 255 }).notNull().primaryKey(),
 
@@ -61,9 +59,9 @@ export const sessions = pgTable(
       .notNull()
       .references(() => users.id),
 
-    expires: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
+    expires: d.timestamp({ mode: 'date', withTimezone: true }).notNull(),
   }),
-  (t) => [index("t_user_id_idx").on(t.userId)],
+  (t) => [index('t_user_id_idx').on(t.userId)],
 );
 
 /*****************/
