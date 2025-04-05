@@ -8,13 +8,13 @@ const SidebarHeaderContent = () => {
     <SidebarMenu>
       <SidebarMenuItem>
         <Link href="/platform">
-          <div className="hover:bg-primary-foreground flex max-h-[64px] items-center overflow-hidden rounded-md transition-colors">
+          <div className="hover:bg-sidebar-accent flex max-h-[64px] items-center overflow-hidden rounded-md transition-colors">
             <Image
               width={64}
               height={64}
               src="/logo-no-bg.webp"
               alt="Logo"
-              className="aspect-square max-h-[64px] min-w-[30px]"
+              className="aspect-square max-h-[64px] min-w-[30px] dark:mix-blend-plus-darker dark:brightness-150"
               loading="eager"
             />
             <div className="pointer-events-none flex flex-1 flex-col items-center justify-center whitespace-nowrap data-[state=open]:hidden">
