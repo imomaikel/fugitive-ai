@@ -19,7 +19,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "ui": "bunx --bun shadcn@latest --"
+    "ui": "bunx --bun shadcn@latest --",
+    "postinstall": "bun run db:migrate"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.8.0",
