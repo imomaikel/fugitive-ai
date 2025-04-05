@@ -1,10 +1,13 @@
 import ThemeToggler from '../ThemeToggler';
+import { SidebarMenu, SidebarMenuItem } from '../ui/sidebar';
 
 const SidebarFooterContent = () => {
   return (
-    <div>
-      <ThemeToggler />
-    </div>
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <ThemeToggler />
+      </SidebarMenuItem>
+    </SidebarMenu>
   );
 };
 
