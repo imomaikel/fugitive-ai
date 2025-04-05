@@ -1,13 +1,18 @@
-'use client';
-
 import * as React from 'react';
+
+import type { User } from 'next-auth';
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
 
 import SidebarFooterContent from './Footer';
 import SidebarHeaderContent from './Header';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps {
+  props?: React.ComponentProps<typeof Sidebar>;
+  user: User;
+}
+
+const AppSidebar: React.FC<AppSidebarProps> = ({ props, user }) => {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -15,9 +20,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent></SidebarContent>
       <SidebarFooter>
-        <SidebarFooterContent />
+        <SidebarFooterContent user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
-}
+};
+
+export default AppSidebar;

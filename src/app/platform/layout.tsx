@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-import { AppSidebar } from '@/components/sidebar';
+import { getUser } from '@/server/queries';
+
+import AppSidebar from '@/components/sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 interface PlatformLayoutProps {
@@ -8,12 +11,18 @@ interface PlatformLayoutProps {
 }
 
 const PlatformLayout: React.FC<PlatformLayoutProps> = async ({ children }) => {
-  const cookieStore = await cookies();
+  const [user, cookieStore] = await Promise.all([getUser(), cookies()]);
+
+  if (!user?.id) {
+    // TODO: Redirect to login page
+    redirect('/');
+  }
+
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
+      <AppSidebar user={user} />
       <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );

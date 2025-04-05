@@ -1,11 +1,17 @@
-import ThemeToggler from '../ThemeToggler';
-import { SidebarMenu, SidebarMenuItem } from '../ui/sidebar';
+import type { User } from 'next-auth';
 
-const SidebarFooterContent = () => {
+import { SidebarMenu, SidebarMenuItem } from '../ui/sidebar';
+import Profile from './Profile';
+
+interface SidebarFooterContentProps {
+  user: User;
+}
+
+const SidebarFooterContent: React.FC<SidebarFooterContentProps> = ({ user }) => {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <ThemeToggler />
+        <Profile user={user} />
       </SidebarMenuItem>
     </SidebarMenu>
   );
