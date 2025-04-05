@@ -3,6 +3,8 @@ import { Quicksand } from 'next/font/google';
 
 import { TRPCReactProvider } from '@/trpc/react';
 
+import { cn } from '@/lib/utils';
+
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -13,7 +15,6 @@ export const metadata: Metadata = {
 
 const quickSand = Quicksand({
   subsets: ['latin'],
-  variable: '--font-quicksand',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
 });
@@ -24,7 +25,7 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <html lang="en" className={`${quickSand.className} `}>
+    <html lang="en" className={cn('scroll-smooth', quickSand.className)}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
