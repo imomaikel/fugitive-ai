@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
-import { TRPCReactProvider } from '@/trpc/react';
+import Providers from '@/components/Providers';
 
 import { cn } from '@/lib/utils';
 
@@ -25,9 +25,9 @@ interface RootLayoutProps {
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <html lang="en" className={cn('scroll-smooth', quickSand.className)}>
+    <html lang="en" suppressHydrationWarning className={cn('scroll-smooth', quickSand.className)}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

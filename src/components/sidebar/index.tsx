@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
 
+import SidebarFooterContent from './Footer';
 import SidebarHeaderContent from './Header';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -13,7 +14,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarHeaderContent />
       </SidebarHeader>
       <SidebarContent></SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter>
+        <SidebarFooterContent />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
