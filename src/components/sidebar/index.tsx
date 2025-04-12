@@ -2,8 +2,15 @@ import * as React from 'react';
 
 import type { User } from 'next-auth';
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import {
+  Sidebar,
+  SidebarContent as SidebarContentWrapper,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from '@/components/ui/sidebar';
 
+import SidebarContent from './Content';
 import SidebarFooterContent from './Footer';
 import SidebarHeaderContent from './Header';
 
@@ -18,7 +25,9 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ props, user }) => {
       <SidebarHeader>
         <SidebarHeaderContent />
       </SidebarHeader>
-      <SidebarContent></SidebarContent>
+      <SidebarContentWrapper>
+        <SidebarContent />
+      </SidebarContentWrapper>
       <SidebarFooter>
         <SidebarFooterContent user={user} />
       </SidebarFooter>
