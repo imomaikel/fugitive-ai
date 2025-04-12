@@ -1,7 +1,13 @@
 import { type AdapterAccount } from 'next-auth/adapters';
 
 import { relations, sql } from 'drizzle-orm';
-import { index, pgTable, primaryKey } from 'drizzle-orm/pg-core';
+import { index, pgEnum, pgTable, primaryKey } from 'drizzle-orm/pg-core';
+
+/*****************/
+/***** ENUMS *****/
+/*****************/
+export const GenderEnum = pgEnum('gender', ['male', 'female']);
+export const DangerLevelEnum = pgEnum('danger_level', ['low', 'medium', 'high']);
 
 /******************/
 /***** Tables *****/
@@ -64,6 +70,36 @@ export const sessions = pgTable(
   (t) => [index('t_user_id_idx').on(t.userId)],
 );
 
+export const fugitives = pgTable('fugitive', (d) => ({
+  id: d
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
+  fullName: d.varchar({ length: 255 }).notNull(),
+  gender: GenderEnum().notNull(),
+  dangerLevel: DangerLevelEnum().notNull(),
+
+  birthDate: d.timestamp({ mode: 'date', withTimezone: true }),
+  identifyNumber: d.varchar({ length: 255 }),
+  nationality: d.varchar({ length: 255 }),
+  appearance: d.text(),
+  notes: d.text(),
+
+  addedBy: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => users.id, { onDelete: 'set null' }),
+
+  createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
+  updatedAt: d
+    .timestamp({ mode: 'date', withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+}));
+
 /*****************/
 /*** Relations ***/
 /*****************/
@@ -74,6 +110,7 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  fugitives: many(fugitives),
 }));
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
