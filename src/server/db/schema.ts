@@ -87,10 +87,8 @@ export const fugitives = pgTable('fugitive', (d) => ({
   appearance: d.text(),
   notes: d.text(),
 
-  addedBy: d
-    .varchar({ length: 255 })
-    .notNull()
-    .references(() => users.id, { onDelete: 'set null' }),
+  addedByUserId: d.varchar({ length: 255 }).references(() => users.id, { onDelete: 'set null' }),
+  addedByUserName: d.varchar({ length: 255 }).notNull(),
 
   createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
   updatedAt: d
