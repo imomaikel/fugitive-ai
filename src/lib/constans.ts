@@ -6,6 +6,10 @@ export const SIDEBAR_TABS: {
   label: string;
   Icon: IconType;
   href: `/platform/${string}`;
+  subMenus?: {
+    label: string;
+    href: `/platform/${string}`;
+  }[];
 }[] = [
   {
     label: 'Home',
@@ -16,5 +20,11 @@ export const SIDEBAR_TABS: {
     label: 'Fugitives',
     Icon: RiCriminalFill,
     href: '/platform/fugitives',
+    subMenus: [
+      {
+        href: '/platform/fugitives/new',
+        label: 'Add New',
+      },
+    ],
   },
 ] as const;

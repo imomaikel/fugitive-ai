@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import {
   Breadcrumb,
@@ -14,9 +14,10 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 interface PageWrapperProps {
   children: React.ReactNode;
   pageName: string;
+  previousPages?: { label: string; href: string }[];
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName }) => {
+const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName, previousPages }) => {
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -29,6 +30,14 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName }) => {
                 <BreadcrumbLink href="/platform">Platform</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
+              {previousPages?.map(({ href, label }, idx) => (
+                <Fragment key={`item-${idx}`}>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink href={href}>{label}</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="hidden md:block" />
+                </Fragment>
+              ))}
               <BreadcrumbItem>
                 <BreadcrumbPage>{pageName}</BreadcrumbPage>
               </BreadcrumbItem>
@@ -36,7 +45,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName }) => {
           </Breadcrumb>
         </div>
       </header>
-      <div className="px-4 pb-4">{children}</div>
+      <div className="relative h-full overflow-x-hidden overflow-y-auto px-4 pb-4">{children}</div>
     </>
   );
 };
