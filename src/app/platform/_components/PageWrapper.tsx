@@ -26,7 +26,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName }) => {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Platform</BreadcrumbLink>
+                <BreadcrumbLink href="/platform">Platform</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
