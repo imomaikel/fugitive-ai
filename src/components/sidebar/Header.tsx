@@ -17,7 +17,7 @@ const SidebarHeaderContent = () => {
               className="aspect-square max-h-[64px] min-w-[30px] dark:mix-blend-plus-darker dark:brightness-150"
               loading="eager"
             />
-            <div className="pointer-events-none flex flex-1 flex-col items-center justify-center whitespace-nowrap data-[state=open]:hidden">
+            <div className="pointer-events-none flex flex-1 flex-col items-center justify-center px-4 whitespace-nowrap data-[state=open]:hidden">
               <h1 className="text-xl font-semibold">Fugitive AI</h1>
               <p className="text-muted-foreground text-xs">Track fugitives</p>
             </div>

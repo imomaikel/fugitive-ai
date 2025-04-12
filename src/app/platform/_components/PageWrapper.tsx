@@ -36,7 +36,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName }) => {
           </Breadcrumb>
         </div>
       </header>
-      <div className="px-4">{children}</div>
+      <div className="px-4 pb-4">{children}</div>
     </>
   );
 };
