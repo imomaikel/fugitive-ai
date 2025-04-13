@@ -1,6 +1,7 @@
 import PageWrapper from '../../_components/PageWrapper';
+import AddFugitiveForm from './_components/Form';
 
-const NewFugitivePage = () => {
+const NewFugitivePage = async () => {
   return (
     <PageWrapper
       previousPages={[
@@ -10,8 +11,14 @@ const NewFugitivePage = () => {
         },
       ]}
       pageName="Add New"
+      description="Here you can add new fugitives to the system."
     >
-      NewFugitivePage
+      <div>
+        <div></div>
+        <div>
+          <AddFugitiveForm />
+        </div>
+      </div>
     </PageWrapper>
   );
 };

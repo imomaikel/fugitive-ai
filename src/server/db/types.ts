@@ -15,3 +15,6 @@ export type FugitiveRaw = z.infer<typeof FugitiveSchema>;
 export const FugitiveInsertSchema = createInsertSchema(fugitives).omit({ id: true, createdAt: true, updatedAt: true });
 
 export type FugitiveInsert = z.infer<typeof FugitiveInsertSchema>;
+
+// Enums
+export type FugitiveStatus = z.infer<typeof FugitiveSchema>['status'];

@@ -104,3 +104,31 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
     },
   });
 });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const captureTRPCError = (error: any, debugMessage?: string) => {
+  if (debugMessage) console.error(`[tRPC] ${debugMessage}`, error);
+
+  if (error instanceof TRPCError) throw error;
+
+  if ('code' in error && typeof error === 'object') {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (error?.code === '23505') {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Nie można dodać duplikatu.',
+      });
+    }
+
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Wystąpił błąd po stronie serwera.',
+    });
+  }
+
+  throw new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    message: error?.message ?? undefined,
+  });
+};

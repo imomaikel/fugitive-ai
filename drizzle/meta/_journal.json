@@ -8,6 +8,13 @@
       "when": 1743879184818,
       "tag": "0000_smiling_living_tribunal",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1744548296793,
+      "tag": "0001_next_hawkeye",
+      "breakpoints": true
     }
   ]
 }

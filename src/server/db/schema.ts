@@ -7,7 +7,19 @@ import { index, pgEnum, pgTable, primaryKey } from 'drizzle-orm/pg-core';
 /***** ENUMS *****/
 /*****************/
 export const GenderEnum = pgEnum('gender', ['male', 'female']);
-export const DangerLevelEnum = pgEnum('danger_level', ['low', 'medium', 'high']);
+export const DangerLevelEnum = pgEnum('danger_level', ['low', 'medium', 'high', 'extreme']);
+export const FugitiveStatusEnum = pgEnum('fugitive_status', [
+  'wanted',
+  'identified',
+  'located',
+  'under surveillance',
+  'apprehended',
+  'no longer wanted',
+  'suspected',
+  'in hiding',
+  'international warrant',
+  'pending verification',
+]);
 
 /******************/
 /***** Tables *****/
@@ -90,6 +102,8 @@ export const fugitives = pgTable('fugitive', (d) => ({
   addedByUserId: d.varchar({ length: 255 }).references(() => users.id, { onDelete: 'set null' }),
   addedByUserName: d.varchar({ length: 255 }).notNull(),
 
+  status: FugitiveStatusEnum().notNull(),
+
   createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
   updatedAt: d
     .timestamp({ mode: 'date', withTimezone: true })
@@ -113,4 +127,8 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
+}));
+
+export const fugitivesRelations = relations(fugitives, ({ one }) => ({
+  addedByUser: one(users, { fields: [fugitives.addedByUserId], references: [users.id] }),
 }));

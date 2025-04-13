@@ -3,6 +3,8 @@
 import { ThemeProvider } from 'next-themes';
 
 import { TRPCReactProvider } from '@/trpc/react';
+import { ProgressProvider } from '@bprogress/next/app';
+import { Toaster } from 'sonner';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -10,11 +12,14 @@ interface ProvidersProps {
 
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
-    <TRPCReactProvider>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-        {children}
-      </ThemeProvider>
-    </TRPCReactProvider>
+    <ProgressProvider height="2px" color="#7f22fe" options={{ showSpinner: false }} shallowRouting>
+      <TRPCReactProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+        <Toaster />
+      </TRPCReactProvider>
+    </ProgressProvider>
   );
 };
 
