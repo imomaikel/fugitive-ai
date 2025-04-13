@@ -22,6 +22,10 @@ export const SIDEBAR_TABS: {
     href: '/platform/fugitives',
     subMenus: [
       {
+        href: '/platform/fugitives',
+        label: 'All Fugitives',
+      },
+      {
         href: '/platform/fugitives/new',
         label: 'Add New',
       },

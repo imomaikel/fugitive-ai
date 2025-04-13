@@ -1,12 +1,16 @@
+import { Suspense } from 'react';
+
 import Link from 'next/link';
 
 import { Plus } from 'lucide-react';
 
+import Loader from '@/components/Loader';
 import { Button } from '@/components/ui/button';
 
 import PageWrapper from '../_components/PageWrapper';
+import FugitiveList from './_components/FugitiveList';
 
-const FugitivesPage = () => {
+const FugitivesPage = async () => {
   return (
     <PageWrapper pageName="Fugitives">
       <div>
@@ -20,7 +24,11 @@ const FugitivesPage = () => {
             </Link>
           </Button>
         </div>
-        <div></div>
+        <div className="mt-4">
+          <Suspense fallback={<Loader />}>
+            <FugitiveList />
+          </Suspense>
+        </div>
       </div>
     </PageWrapper>
   );

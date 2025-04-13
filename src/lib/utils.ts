@@ -1,5 +1,7 @@
 import type { FugitiveStatus } from '@/server/db/types';
 import { type ClassValue, clsx } from 'clsx';
+import { formatRelative } from 'date-fns';
+import { enUS } from 'date-fns/locale/en-US';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
@@ -52,3 +54,20 @@ export const errorToast = (message: any) => {
   toast.error(fixedMessage);
 };
 /* eslint-enable */
+
+const formatRelativeLocale = {
+  lastWeek: "'Last' eeee 'at' p",
+  yesterday: "'Yesterday at' p",
+  today: "'Today at' p",
+  tomorrow: "'Tomorrow at' p",
+  nextWeek: "eeee 'at' p",
+  other: 'Pp',
+} as const;
+type relative = keyof typeof formatRelativeLocale;
+
+export const relativeDate = (date: Date, baseDate?: Date) => {
+  const relative = formatRelative(date, baseDate ?? new Date(), {
+    locale: { ...enUS, formatRelative: (token: relative) => formatRelativeLocale[token] },
+  });
+  return relative;
+};
