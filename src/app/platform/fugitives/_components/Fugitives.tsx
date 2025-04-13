@@ -1,6 +1,6 @@
 'use client';
 
-import type { FugitiveRaw, FugitiveStatus } from '@/server/db/types';
+import type { FugitiveRaw } from '@/server/db/types';
 import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { CircleHelp } from 'lucide-react';
 
@@ -18,10 +18,10 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   {
     accessorKey: 'gender',
     header: 'Gender',
-    cell: ({ cell }) => {
+    cell: ({ row }) => {
       return (
         <Badge variant="secondary" className="capitalize">
-          {cell.getValue() as string}
+          {row.original.gender}
         </Badge>
       );
     },
@@ -29,12 +29,12 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   {
     accessorKey: 'dangerLevel',
     header: 'Danger Level',
-    cell: ({ cell }) => {
-      const value = cell.getValue() as FugitiveRaw['dangerLevel'];
+    cell: ({ row }) => {
+      const value = row.original.dangerLevel;
 
       return (
         <Badge variant={value === 'extreme' || value === 'high' ? 'destructive' : 'secondary'} className="uppercase">
-          {cell.getValue() as string}
+          {value}
         </Badge>
       );
     },
@@ -42,8 +42,8 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ cell }) => {
-      const value = cell.getValue() as FugitiveStatus;
+    cell: ({ row }) => {
+      const value = row.original.status;
 
       return (
         <TooltipProvider>
@@ -71,15 +71,15 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   {
     accessorKey: 'updatedAt',
     header: 'Updated At',
-    cell: ({ cell }) => {
-      return <span>{relativeDate(cell.getValue() as Date)}</span>;
+    cell: ({ row }) => {
+      return <span>{relativeDate(row.original.updatedAt)}</span>;
     },
   },
   {
     accessorKey: 'createdAt',
     header: 'Created At',
-    cell: ({ cell }) => {
-      return <span>{relativeDate(cell.getValue() as Date)}</span>;
+    cell: ({ row }) => {
+      return <span>{relativeDate(row.original.createdAt)}</span>;
     },
   },
 ];
