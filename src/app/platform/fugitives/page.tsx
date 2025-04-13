@@ -12,7 +12,7 @@ import FugitiveList from './_components/FugitiveList';
 
 const FugitivesPage = async () => {
   return (
-    <PageWrapper pageName="Fugitives">
+    <PageWrapper pageName="Fugitives" description="Here you can filter, sort and search for fugitives in the system.">
       <div>
         <div className="flex items-center gap-6">
           <h2 className="text-xl font-semibold">All Fugitives</h2>

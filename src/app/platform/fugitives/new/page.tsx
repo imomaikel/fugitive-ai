@@ -1,5 +1,5 @@
 import PageWrapper from '../../_components/PageWrapper';
-import AddFugitiveForm from './_components/Form';
+import FugitiveForm from '../_components/FugitiveForm';
 
 const NewFugitivePage = async () => {
   return (
@@ -16,7 +16,7 @@ const NewFugitivePage = async () => {
       <div>
         <div></div>
         <div>
-          <AddFugitiveForm />
+          <FugitiveForm mode="ADD" />
         </div>
       </div>
     </PageWrapper>

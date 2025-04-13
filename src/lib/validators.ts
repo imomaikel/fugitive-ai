@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const FugitiveValidator = z.object({
+  id: z.string().nullable(),
   fullName: z.string().min(1),
   gender: z.enum(['male', 'female']),
   dangerLevel: z.enum(['low', 'medium', 'high', 'extreme']),

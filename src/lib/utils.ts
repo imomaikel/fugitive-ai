@@ -1,4 +1,4 @@
-import type { FugitiveStatus } from '@/server/db/types';
+import type { FugitiveRaw, FugitiveStatus } from '@/server/db/types';
 import { type ClassValue, clsx } from 'clsx';
 import { formatRelative } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
@@ -70,4 +70,31 @@ export const relativeDate = (date: Date, baseDate?: Date) => {
     locale: { ...enUS, formatRelative: (token: relative) => formatRelativeLocale[token] },
   });
   return relative;
+};
+
+export const translateFugitiveColumnName = (column: keyof FugitiveRaw) => {
+  switch (column) {
+    case 'fullName':
+      return 'Full Name';
+    case 'gender':
+      return 'Gender';
+    case 'dangerLevel':
+      return 'Danger Level';
+    case 'status':
+      return 'Status';
+    case 'identifyNumber':
+      return 'ID Number';
+    case 'nationality':
+      return 'Nationality';
+    case 'appearance':
+      return 'Appearance';
+    case 'notes':
+      return 'Notes';
+    case 'addedByUserName':
+      return 'Added By';
+    case 'birthDate':
+      return 'Birth Date';
+    default:
+      return column;
+  }
 };

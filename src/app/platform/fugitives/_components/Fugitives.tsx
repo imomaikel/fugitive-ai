@@ -1,10 +1,15 @@
 'use client';
 
+import { IoOpenOutline } from 'react-icons/io5';
+
+import Link from 'next/link';
+
 import type { FugitiveRaw } from '@/server/db/types';
 import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { CircleHelp } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -80,6 +85,19 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
     header: 'Created At',
     cell: ({ row }) => {
       return <span>{relativeDate(row.original.createdAt)}</span>;
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Details',
+    cell: ({ row }) => {
+      return (
+        <Button size="icon" asChild variant="ghost">
+          <Link href={`/platform/fugitives/${row.original.id}`}>
+            <IoOpenOutline />
+          </Link>
+        </Button>
+      );
     },
   },
 ];

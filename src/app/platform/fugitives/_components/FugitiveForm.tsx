@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Link from 'next/link';
@@ -23,12 +24,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn, errorToast, getFugitiveStatusDescription } from '@/lib/utils';
 import { type FugitiveSchema, FugitiveValidator } from '@/lib/validators';
 
-const AddFugitiveForm = () => {
+interface FugitiveFormProps {
+  mode: 'ADD' | 'EDIT';
+  defaultValues?: FugitiveSchema;
+}
+
+const FugitiveForm: React.FC<FugitiveFormProps> = ({ defaultValues, mode }) => {
   const router = useRouter();
 
   const form = useForm<FugitiveSchema>({
     resolver: zodResolver(FugitiveValidator),
     defaultValues: {
+      id: null,
       fullName: '',
       gender: 'male',
       status: 'wanted',
@@ -38,10 +45,16 @@ const AddFugitiveForm = () => {
       nationality: '',
       appearance: '',
       notes: '',
+      ...defaultValues,
     },
   });
 
-  const { mutate: addFugitive, isPending } = api.fugitive.add.useMutation({
+  useEffect(() => {
+    if (!defaultValues) return;
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
+
+  const { mutate: addFugitive, isPending: isAdding } = api.fugitive.add.useMutation({
     onError: errorToast,
     onSuccess: (response) => {
       if (response?.success) {
@@ -54,9 +67,27 @@ const AddFugitiveForm = () => {
     },
   });
 
+  const { mutate: updateFugitive, isPending: isUpdating } = api.fugitive.update.useMutation({
+    onError: errorToast,
+    onSuccess: (response) => {
+      if (response?.success) {
+        toast.success('Fugitive updated successfully');
+        router.refresh();
+      } else {
+        errorToast(undefined);
+      }
+    },
+  });
+
   const handleFormSubmit = (values: FugitiveSchema) => {
-    addFugitive(values);
+    if (mode === 'ADD') {
+      addFugitive(values);
+    } else {
+      updateFugitive(values);
+    }
   };
+
+  const isPending = isAdding || isUpdating;
 
   return (
     <div>
@@ -266,7 +297,7 @@ const AddFugitiveForm = () => {
               <Link href="/platform/fugitives">See all Fugitives</Link>
             </Button>
             <Button type="submit" className="min-w-[30%] cursor-pointer" disabled={isPending}>
-              Add Fugitive
+              {mode === 'ADD' ? 'Add Fugitive' : 'Update Fugitive'}
             </Button>
           </div>
         </form>
@@ -275,6 +306,6 @@ const AddFugitiveForm = () => {
   );
 };
 
-export default AddFugitiveForm;
+export default FugitiveForm;
 
 // TODO: Assign location to a fugitive
