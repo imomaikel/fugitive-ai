@@ -17,7 +17,7 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>
-        <Toaster />
+        <Toaster position="top-center" offset={20} />
       </TRPCReactProvider>
     </ProgressProvider>
   );
