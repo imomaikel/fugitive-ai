@@ -112,6 +112,24 @@ export const fugitives = pgTable('fugitive', (d) => ({
     .notNull(),
 }));
 
+export const fugitiveLogs = pgTable('fugitive_log', (d) => ({
+  id: d
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
+  fugitiveId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => fugitives.id, { onDelete: 'cascade' }),
+  userId: d.varchar({ length: 255 }).references(() => users.id, { onDelete: 'set null' }),
+
+  message: d.text().notNull(),
+
+  createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
+}));
+
 /*****************/
 /*** Relations ***/
 /*****************/
@@ -129,6 +147,12 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
 
-export const fugitivesRelations = relations(fugitives, ({ one }) => ({
+export const fugitivesRelations = relations(fugitives, ({ one, many }) => ({
   addedByUser: one(users, { fields: [fugitives.addedByUserId], references: [users.id] }),
+  logs: many(fugitiveLogs),
+}));
+
+export const fugitiveLogsRelations = relations(fugitiveLogs, ({ one }) => ({
+  fugitive: one(fugitives, { fields: [fugitiveLogs.fugitiveId], references: [fugitives.id] }),
+  user: one(users, { fields: [fugitiveLogs.userId], references: [users.id] }),
 }));
