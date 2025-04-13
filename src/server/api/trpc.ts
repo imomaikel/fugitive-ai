@@ -116,13 +116,13 @@ export const captureTRPCError = (error: any, debugMessage?: string) => {
     if (error?.code === '23505') {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Nie można dodać duplikatu.',
+        message: 'Could not add duplicated value',
       });
     }
 
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: 'Wystąpił błąd po stronie serwera.',
+      message: 'Something went wrong',
     });
   }
 
