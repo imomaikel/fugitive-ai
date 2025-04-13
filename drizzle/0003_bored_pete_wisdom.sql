@@ -1,0 +1,1 @@
+ALTER TABLE "fugitive" ADD CONSTRAINT "fugitive_identifyNumber_unique" UNIQUE("identifyNumber");

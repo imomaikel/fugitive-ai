@@ -94,7 +94,7 @@ export const fugitives = pgTable('fugitive', (d) => ({
   dangerLevel: DangerLevelEnum().notNull(),
 
   birthDate: d.timestamp({ mode: 'date', withTimezone: true }),
-  identifyNumber: d.varchar({ length: 255 }),
+  identifyNumber: d.varchar({ length: 255 }).unique(),
   nationality: d.varchar({ length: 255 }),
   appearance: d.text(),
   notes: d.text(),
