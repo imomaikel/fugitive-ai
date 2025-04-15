@@ -8,20 +8,17 @@ import Link from 'next/link';
 import { api } from '@/trpc/react';
 import { useRouter } from '@bprogress/next/app';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { DateTimePicker } from '@/components/ui/calendar';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import { cn, errorToast, getFugitiveStatusDescription } from '@/lib/utils';
+import { errorToast, getFugitiveStatusDescription } from '@/lib/utils';
 import { type FugitiveSchema, FugitiveValidator } from '@/lib/validators';
 
 interface FugitiveFormProps {
@@ -162,29 +159,13 @@ const FugitiveForm: React.FC<FugitiveFormProps> = ({ defaultValues, mode }) => {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Birth Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          disabled={isPending}
-                          variant={'outline'}
-                          className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
-                        >
-                          {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="center">
-                      <Calendar
-                        mode="single"
-                        selected={field.value ?? undefined}
-                        onSelect={field.onChange}
-                        disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                        weekStartsOn={1}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <DateTimePicker
+                    granularity="day"
+                    value={field.value ?? undefined}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                    className="w-full"
+                  />
                   <FormMessage />
                 </FormItem>
               )}
