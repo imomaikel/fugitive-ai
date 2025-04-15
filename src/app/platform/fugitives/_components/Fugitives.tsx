@@ -94,7 +94,7 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   },
   {
     id: 'actions',
-    header: 'Details',
+    header: 'Actions',
     cell: ({ row }) => {
       const fugitiveId = row.original.id;
 
