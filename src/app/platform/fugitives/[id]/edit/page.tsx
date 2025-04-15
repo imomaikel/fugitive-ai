@@ -6,9 +6,10 @@ import { db } from '@/server/db';
 import { fugitives } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-import PageWrapper from '../../_components/PageWrapper';
+import PageWrapper from '../../../_components/PageWrapper';
+import FugitiveForm from '../../_components/FugitiveForm';
 
-const FugitiveDetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+const FugitiveEditPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const fugitiveId = (await params).id;
 
   const [fugitiveDetails] = await db.select().from(fugitives).where(eq(fugitives.id, fugitiveId)).limit(1);
@@ -22,13 +23,19 @@ const FugitiveDetailsPage = async ({ params }: { params: Promise<{ id: string }>
           href: '/platform/fugitives',
           label: 'Fugitives',
         },
+        {
+          href: `/platform/fugitives/${fugitiveDetails.id}`,
+          label: fugitiveDetails.fullName,
+        },
       ]}
-      pageName={fugitiveDetails.fullName}
-      description="Here you can view fugitive profile."
+      pageName="Edit"
+      description="Here you can edit fugitive details."
     >
-      <div></div>
+      <div>
+        <FugitiveForm mode="EDIT" defaultValues={fugitiveDetails} />
+      </div>
     </PageWrapper>
   );
 };
 
-export default FugitiveDetailsPage;
+export default FugitiveEditPage;

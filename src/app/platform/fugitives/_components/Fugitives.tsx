@@ -1,15 +1,20 @@
 'use client';
 
-import { IoOpenOutline } from 'react-icons/io5';
-
 import Link from 'next/link';
 
 import type { FugitiveRaw } from '@/server/db/types';
 import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { CircleHelp } from 'lucide-react';
+import { CircleHelp, MoreHorizontal } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -91,12 +96,30 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
     id: 'actions',
     header: 'Details',
     cell: ({ row }) => {
+      const fugitiveId = row.original.id;
+
       return (
-        <Button size="icon" asChild variant="ghost">
-          <Link href={`/platform/fugitives/${row.original.id}`}>
-            <IoOpenOutline />
-          </Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" side="left">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link href={`/platform/fugitives/${fugitiveId}`} className="cursor-pointer">
+                View profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/platform/fugitives/${fugitiveId}/edit`} className="cursor-pointer">
+                Edit details
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
