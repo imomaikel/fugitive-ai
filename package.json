@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.8.0",
-    "@bprogress/next": "^3.2.11",
+    "@bprogress/next": "^3.2.12",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-avatar": "^1.1.4",
     "@radix-ui/react-checkbox": "^1.1.5",
@@ -39,8 +39,8 @@
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-tooltip": "^1.2.0",
     "@t3-oss/env-nextjs": "^0.12.0",
-    "@tanstack/react-query": "^5.73.3",
-    "@tanstack/react-table": "^8.21.2",
+    "@tanstack/react-query": "^5.74.3",
+    "@tanstack/react-table": "^8.21.3",
     "@trpc/client": "^11.1.0",
     "@trpc/react-query": "^11.1.0",
     "@trpc/server": "^11.1.0",
@@ -69,12 +69,12 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
-    "@tailwindcss/postcss": "^4.1.3",
+    "@tailwindcss/postcss": "^4.1.4",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^20.17.30",
-    "@types/react": "^19.1.1",
+    "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "babel-plugin-react-compiler": "^19.0.0-beta-e993439-20250405",
+    "babel-plugin-react-compiler": "^19.0.0-beta-ebf51a3-20250411",
     "drizzle-kit": "^0.30.6",
     "eslint": "^9.24.0",
     "eslint-config-next": "^15.3.0",
@@ -82,9 +82,9 @@
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.1.3",
+    "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.29.1"
+    "typescript-eslint": "^8.30.1"
   },
   "ct3aMetadata": {
     "initVersion": "7.39.0"
