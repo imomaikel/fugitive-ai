@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { RiCriminalFill } from 'react-icons/ri';
-import { Map, Marker, type MarkerEvent } from 'react-map-gl/maplibre';
+import { Map, type MapRef, Marker, type MarkerEvent } from 'react-map-gl/maplibre';
 
 import { api } from '@/trpc/react';
 import { useRouter } from '@bprogress/next/app';
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 
 import { cn, errorToast } from '@/lib/utils';
 
+import FlyToCoords from './FlyToCoords';
 import Preview from './Preview';
 
 interface CustomMapProps {
@@ -31,6 +32,7 @@ interface CustomMapProps {
 
 const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
   const [fugitiveIdToPreview, setFugitiveIdToPreview] = useState<string | null>(null);
+  const mapRef = useRef<MapRef>(null);
   const router = useRouter();
 
   const hasFugitiveSelected = !!fugitiveSelected?.id;
@@ -62,9 +64,19 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
     });
   };
 
+  const handleFlyToCoordinates = (lat: number, lng: number) => {
+    if (!mapRef.current) return;
+
+    mapRef.current.flyTo({
+      center: [lng, lat],
+      zoom: 13,
+    });
+  };
+
   return (
     <>
       <Map
+        ref={mapRef}
         initialViewState={{
           latitude: 40,
           longitude: -100,
@@ -77,6 +89,7 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
         onClick={handleMapClick}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
       >
+        {!hasFugitiveSelected && <FlyToCoords handleFly={handleFlyToCoordinates} />}
         {hasFugitiveSelected && (
           <div className="absolute top-6 flex w-full flex-col items-center justify-center">
             {isPending ? (
