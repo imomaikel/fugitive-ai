@@ -29,7 +29,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
   containerClassName,
 }) => {
   return (
-    <>
+    <div className="h-[calc(100vh-16px)] overflow-clip">
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
@@ -55,16 +55,17 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
           </Breadcrumb>
         </div>
       </header>
-      <div className={cn('relative h-full overflow-x-hidden overflow-y-auto px-4 pb-4', containerClassName)}>
+      <div className={cn('relative h-[calc(100%-64px)] w-full overflow-y-auto px-4 pb-4', containerClassName)}>
         {description && (
           <div className="mb-4 space-y-4">
             <p className="text-muted-foreground leftBar">{description}</p>
             <Separator />
           </div>
         )}
-        <div className={cn('h-full', description && 'h-[calc(100%-24px-16px-1px)]')}>{children}</div>
+
+        {children}
       </div>
-    </>
+    </div>
   );
 };
 
