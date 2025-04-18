@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+
 import { cn } from '@/lib/utils';
 
 interface PageWrapperProps {
@@ -20,7 +21,13 @@ interface PageWrapperProps {
   containerClassName?: string;
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName, description, previousPages ,containerClassName}) => {
+const PageWrapper: React.FC<PageWrapperProps> = ({
+  children,
+  pageName,
+  description,
+  previousPages,
+  containerClassName,
+}) => {
   return (
     <>
       <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -55,10 +62,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children, pageName, descripti
             <Separator />
           </div>
         )}
-        <div className={cn('h-full', description && 'h-[calc(100%-24px-16px-1px)]')}>
-
-        {children}
-        </div>
+        <div className={cn('h-full', description && 'h-[calc(100%-24px-16px-1px)]')}>{children}</div>
       </div>
     </>
   );

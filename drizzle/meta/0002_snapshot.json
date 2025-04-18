@@ -97,12 +97,8 @@
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -110,10 +106,7 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId_pk": {
           "name": "account_provider_providerAccountId_pk",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
+          "columns": ["provider", "providerAccountId"]
         }
       },
       "uniqueConstraints": {},
@@ -163,12 +156,8 @@
           "name": "fugitive_log_fugitiveId_fugitive_id_fk",
           "tableFrom": "fugitive_log",
           "tableTo": "fugitive",
-          "columnsFrom": [
-            "fugitiveId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["fugitiveId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -176,12 +165,8 @@
           "name": "fugitive_log_userId_user_id_fk",
           "tableFrom": "fugitive_log",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -292,12 +277,8 @@
           "name": "fugitive_addedByUserId_user_id_fk",
           "tableFrom": "fugitive",
           "tableTo": "user",
-          "columnsFrom": [
-            "addedByUserId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["addedByUserId"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -353,12 +334,8 @@
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -418,12 +395,7 @@
     "public.danger_level": {
       "name": "danger_level",
       "schema": "public",
-      "values": [
-        "low",
-        "medium",
-        "high",
-        "extreme"
-      ]
+      "values": ["low", "medium", "high", "extreme"]
     },
     "public.fugitive_status": {
       "name": "fugitive_status",
@@ -444,10 +416,7 @@
     "public.gender": {
       "name": "gender",
       "schema": "public",
-      "values": [
-        "male",
-        "female"
-      ]
+      "values": ["male", "female"]
     }
   },
   "schemas": {},
