@@ -102,6 +102,9 @@ export const fugitives = pgTable('fugitive', (d) => ({
   addedByUserId: d.varchar({ length: 255 }).references(() => users.id, { onDelete: 'set null' }),
   addedByUserName: d.varchar({ length: 255 }).notNull(),
 
+  latitude: d.doublePrecision(),
+  longitude: d.doublePrecision(),
+
   status: FugitiveStatusEnum().notNull(),
 
   createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),

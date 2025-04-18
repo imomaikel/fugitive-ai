@@ -6,6 +6,7 @@ import type { FugitiveLogInsert } from '@/server/db/types';
 import { TRPCError } from '@trpc/server';
 import { format } from 'date-fns';
 import { eq } from 'drizzle-orm';
+import { z } from 'zod';
 
 import { translateFugitiveColumnName } from '@/lib/utils';
 import { FugitiveValidator } from '@/lib/validators';
@@ -139,4 +140,47 @@ export const fugitiveRouter = createTRPCRouter({
       captureTRPCError(error, 'Error updating fugitive');
     }
   }),
+  get: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const { id: fugitiveId } = input;
+        const { db } = ctx;
+
+        const [fugitive] = await db
+          .select({
+            id: fugitives.id,
+            fullName: fugitives.fullName,
+            gender: fugitives.gender,
+            dangerLevel: fugitives.dangerLevel,
+            birthDate: fugitives.birthDate,
+            identifyNumber: fugitives.identifyNumber,
+            nationality: fugitives.nationality,
+            appearance: fugitives.appearance,
+            notes: fugitives.notes,
+            latitude: fugitives.latitude,
+            longitude: fugitives.longitude,
+            status: fugitives.status,
+            createdAt: fugitives.createdAt,
+            updatedAt: fugitives.updatedAt,
+          })
+          .from(fugitives)
+          .where(eq(fugitives.id, fugitiveId))
+          .limit(1);
+
+        if (!fugitive) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+          });
+        }
+
+        return fugitive;
+      } catch (error) {
+        captureTRPCError(error, 'Error adding fugitive');
+      }
+    }),
 });

@@ -1,7 +1,20 @@
+import { db } from '@/server/db';
+import { fugitives } from '@/server/db/schema';
+import { and, isNotNull, sql } from 'drizzle-orm';
+
 import PageWrapper from '../../_components/PageWrapper';
 import CustomMap from './_components/CustomMap';
 
 const TrackingMapPage = async () => {
+  const fugitiveMarkers = await db
+    .select({
+      fugitiveId: fugitives.id,
+      latitude: sql<number>`${fugitives.latitude} as latitude`,
+      longitude: sql<number>`${fugitives.longitude} as longitude`,
+    })
+    .from(fugitives)
+    .where(and(isNotNull(fugitives.latitude), isNotNull(fugitives.longitude)));
+
   return (
     <PageWrapper
       previousPages={[
@@ -15,7 +28,7 @@ const TrackingMapPage = async () => {
     >
       <div className="absolute bottom-0 left-0 h-full w-full overflow-clip">
         <div className="h-full w-full">
-          <CustomMap />
+          <CustomMap markers={fugitiveMarkers} />
         </div>
       </div>
     </PageWrapper>
