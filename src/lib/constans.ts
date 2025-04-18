@@ -2,6 +2,8 @@ import type { IconType } from 'react-icons';
 import { FaHome } from 'react-icons/fa';
 import { RiCriminalFill } from 'react-icons/ri';
 
+import { Radar } from 'lucide-react';
+
 export const SIDEBAR_TABS: {
   label: string;
   Icon: IconType;
@@ -28,6 +30,17 @@ export const SIDEBAR_TABS: {
       {
         href: '/platform/fugitives/new',
         label: 'Add New',
+      },
+    ],
+  },
+  {
+    label: 'Tracking',
+    Icon: Radar,
+    href: '/platform/tracking',
+    subMenus: [
+      {
+        href: '/platform/tracking/map',
+        label: 'Map',
       },
     ],
   },
