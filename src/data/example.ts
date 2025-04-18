@@ -4,7 +4,6 @@ import { db } from '@/server/db';
 import { fugitiveLogs, fugitives, locationHistory } from '@/server/db/schema';
 import type { FugitiveInsert, LocationHistoryInsert } from '@/server/db/types';
 import crypto from 'crypto';
-import dotenv from 'dotenv';
 import { and, eq, isNotNull } from 'drizzle-orm';
 
 /* **********************************************************************************************
@@ -21,7 +20,6 @@ import { and, eq, isNotNull } from 'drizzle-orm';
  ********************************************************************************************** */
 
 type DataInsertType = (FugitiveInsert & { locationHistory: Omit<LocationHistoryInsert, 'fugitiveId'>[] })[];
-dotenv.config({ path: '.env' });
 
 const exampleData = [
   {
