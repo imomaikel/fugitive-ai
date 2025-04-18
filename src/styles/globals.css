@@ -122,7 +122,3 @@
     @apply before:bg-primary relative pl-3 before:absolute before:left-0 before:h-full before:w-[2px] before:rounded-full;
   }
 }
-
-.maplibregl-ctrl-attrib-inner {
-  @apply absolute bottom-0 px-2 py-1 text-xs;
-}
