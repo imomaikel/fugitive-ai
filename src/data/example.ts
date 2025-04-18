@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { db } from '@/server/db';
 import { fugitiveLogs, fugitives, locationHistory } from '@/server/db/schema';
 import type { FugitiveInsert, LocationHistoryInsert } from '@/server/db/types';
 import crypto from 'crypto';
@@ -281,8 +282,6 @@ const exampleData = [
 ] satisfies DataInsertType;
 
 export const populateDatabase = async () => {
-  const { db } = await import('@/server/db');
-
   await db.transaction(async (tx) => {
     await Promise.all(
       exampleData.map((fugitive) =>
