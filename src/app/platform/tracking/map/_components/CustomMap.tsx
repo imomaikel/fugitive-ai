@@ -8,7 +8,6 @@ import { api } from '@/trpc/react';
 import { useRouter } from '@bprogress/next/app';
 import { Loader2 } from 'lucide-react';
 import type { MapMouseEvent } from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
@@ -17,6 +16,8 @@ import { cn, errorToast } from '@/lib/utils';
 
 import FlyToCoords from './FlyToCoords';
 import Preview from './Preview';
+
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 interface CustomMapProps {
   markers: {
