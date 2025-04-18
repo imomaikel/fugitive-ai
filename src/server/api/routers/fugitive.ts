@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { captureTRPCError, createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
-import { fugitiveLogs, fugitives } from '@/server/db/schema';
+import { fugitiveLogs, fugitives, locationHistory } from '@/server/db/schema';
 import type { FugitiveLogInsert } from '@/server/db/types';
 import { TRPCError } from '@trpc/server';
 import { format } from 'date-fns';
@@ -208,7 +208,13 @@ export const fugitiveRouter = createTRPCRouter({
           await tx.insert(fugitiveLogs).values({
             fugitiveId: id,
             userId: ctx.session.user.id,
-            message: `Changed location of fugitive to "LAT: ${latitude}, LONG: ${longitude}"`,
+            message: `Changed location of fugitive to LAT/LNG: "${latitude}, ${longitude}"`,
+          });
+
+          await tx.insert(locationHistory).values({
+            fugitiveId: id,
+            latitude,
+            longitude,
           });
         });
 

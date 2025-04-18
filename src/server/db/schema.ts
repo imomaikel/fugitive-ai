@@ -115,6 +115,26 @@ export const fugitives = pgTable('fugitive', (d) => ({
     .notNull(),
 }));
 
+export const locationHistory = pgTable('location_history', (d) => ({
+  id: d
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
+  latitude: d.doublePrecision(),
+  longitude: d.doublePrecision(),
+  place: d.text(),
+  context: d.text(),
+
+  fugitiveId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => fugitives.id, { onDelete: 'cascade' }),
+
+  createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
+}));
+
 export const fugitiveLogs = pgTable('fugitive_log', (d) => ({
   id: d
     .varchar({ length: 255 })
@@ -153,9 +173,14 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const fugitivesRelations = relations(fugitives, ({ one, many }) => ({
   addedByUser: one(users, { fields: [fugitives.addedByUserId], references: [users.id] }),
   logs: many(fugitiveLogs),
+  locationHistory: many(locationHistory),
 }));
 
 export const fugitiveLogsRelations = relations(fugitiveLogs, ({ one }) => ({
   fugitive: one(fugitives, { fields: [fugitiveLogs.fugitiveId], references: [fugitives.id] }),
   user: one(users, { fields: [fugitiveLogs.userId], references: [users.id] }),
+}));
+
+export const locationHistoryRelations = relations(locationHistory, ({ one }) => ({
+  fugitive: one(fugitives, { fields: [locationHistory.fugitiveId], references: [fugitives.id] }),
 }));
