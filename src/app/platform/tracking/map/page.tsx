@@ -1,19 +1,46 @@
+import { notFound } from 'next/navigation';
+
 import { db } from '@/server/db';
 import { fugitives } from '@/server/db/schema';
-import { and, isNotNull, sql } from 'drizzle-orm';
+import { and, eq, isNotNull, sql } from 'drizzle-orm';
+import { z } from 'zod';
 
 import PageWrapper from '../../_components/PageWrapper';
 import CustomMap from './_components/CustomMap';
 
-const TrackingMapPage = async () => {
-  const fugitiveMarkers = await db
-    .select({
-      fugitiveId: fugitives.id,
-      latitude: sql<number>`${fugitives.latitude} as latitude`,
-      longitude: sql<number>`${fugitives.longitude} as longitude`,
-    })
-    .from(fugitives)
-    .where(and(isNotNull(fugitives.latitude), isNotNull(fugitives.longitude)));
+const TrackingMapPage = async ({ searchParams }: { searchParams: Promise<{ fugitiveIdSelected: string }> }) => {
+  const fugitiveIdSelected = z
+    .string()
+    .min(1)
+    .safeParse((await searchParams).fugitiveIdSelected).data;
+
+  const fugitiveMarkers = !fugitiveIdSelected
+    ? await db
+        .select({
+          fugitiveId: fugitives.id,
+          latitude: sql<number>`${fugitives.latitude} as latitude`,
+          longitude: sql<number>`${fugitives.longitude} as longitude`,
+        })
+        .from(fugitives)
+        .where(and(isNotNull(fugitives.latitude), isNotNull(fugitives.longitude)))
+    : [];
+
+  const [fugitive] = fugitiveIdSelected
+    ? await db.select().from(fugitives).where(eq(fugitives.id, fugitiveIdSelected)).limit(1)
+    : [];
+
+  if (fugitiveIdSelected) {
+    if (!fugitive?.id) {
+      notFound();
+    }
+  }
+
+  const fugitiveSelected = fugitive
+    ? {
+        id: fugitive.id,
+        fullName: fugitive.fullName,
+      }
+    : undefined;
 
   return (
     <PageWrapper
@@ -28,7 +55,7 @@ const TrackingMapPage = async () => {
     >
       <div className="absolute bottom-0 left-0 h-full w-full overflow-clip">
         <div className="h-full w-full">
-          <CustomMap markers={fugitiveMarkers} />
+          <CustomMap markers={fugitiveMarkers} fugitiveSelected={fugitiveSelected} />
         </div>
       </div>
     </PageWrapper>

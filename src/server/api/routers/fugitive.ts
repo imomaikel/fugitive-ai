@@ -180,7 +180,41 @@ export const fugitiveRouter = createTRPCRouter({
 
         return fugitive;
       } catch (error) {
-        captureTRPCError(error, 'Error adding fugitive');
+        captureTRPCError(error, 'Error getting fugitive');
+      }
+    }),
+  setLocation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        latitude: z.number(),
+        longitude: z.number(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const { id, latitude, longitude } = input;
+        const { db } = ctx;
+
+        await db.transaction(async (tx) => {
+          await tx
+            .update(fugitives)
+            .set({
+              latitude,
+              longitude,
+            })
+            .where(eq(fugitives.id, id));
+
+          await tx.insert(fugitiveLogs).values({
+            fugitiveId: id,
+            userId: ctx.session.user.id,
+            message: `Changed location of fugitive to "LAT: ${latitude}, LONG: ${longitude}"`,
+          });
+        });
+
+        return { success: true };
+      } catch (error) {
+        captureTRPCError(error, 'Error setting location');
       }
     }),
 });
