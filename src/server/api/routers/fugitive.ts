@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { populateDatabase } from '@/data/example';
 import { captureTRPCError, createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
 import { fugitiveLogs, fugitives, locationHistory } from '@/server/db/schema';
 import type { FugitiveLogInsert } from '@/server/db/types';
@@ -223,4 +224,13 @@ export const fugitiveRouter = createTRPCRouter({
         captureTRPCError(error, 'Error setting location');
       }
     }),
+  populateExampleData: protectedProcedure.mutation(async () => {
+    try {
+      await populateDatabase();
+
+      return { success: true };
+    } catch (error) {
+      captureTRPCError(error, 'Error populating example data');
+    }
+  }),
 });

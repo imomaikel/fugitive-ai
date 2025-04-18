@@ -19,6 +19,8 @@ export const FugitiveStatusEnum = pgEnum('fugitive_status', [
   'in hiding',
   'international warrant',
   'pending verification',
+  'incarcerated',
+  'executed',
 ]);
 
 /******************/

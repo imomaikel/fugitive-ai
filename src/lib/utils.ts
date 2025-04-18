@@ -29,6 +29,10 @@ export const getFugitiveStatusDescription = (status: FugitiveStatus) => {
       return 'Subject of an INTERPOL/Europol notice.';
     case 'pending verification':
       return 'Temporary entry awaiting confirmation by authorities.';
+    case 'incarcerated':
+      return 'In prison or jail, awaiting trial.';
+    case 'executed':
+      return 'Sentenced to death.';
     default:
       return 'Unknown';
   }

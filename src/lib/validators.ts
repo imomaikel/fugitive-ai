@@ -16,6 +16,8 @@ export const FugitiveValidator = z.object({
     'in hiding',
     'international warrant',
     'pending verification',
+    'incarcerated',
+    'executed',
   ]),
 
   birthDate: z.date().nullable(),
