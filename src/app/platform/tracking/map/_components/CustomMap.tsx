@@ -4,6 +4,8 @@ import React, { useRef, useState } from 'react';
 import { RiCriminalFill } from 'react-icons/ri';
 import { Map, type MapRef, Marker, type MarkerEvent } from 'react-map-gl/maplibre';
 
+import { useTheme } from 'next-themes';
+
 import { api } from '@/trpc/react';
 import { useRouter } from '@bprogress/next/app';
 import { Loader2 } from 'lucide-react';
@@ -34,6 +36,7 @@ interface CustomMapProps {
 const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
   const [fugitiveIdToPreview, setFugitiveIdToPreview] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
+  const { theme } = useTheme();
   const router = useRouter();
 
   const hasFugitiveSelected = !!fugitiveSelected?.id;
@@ -88,7 +91,11 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
         dragPan={!isPending}
         cursor={isPending ? 'default' : 'grab'}
         onClick={handleMapClick}
-        mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+        mapStyle={
+          theme === 'dark'
+            ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+            : 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json'
+        }
       >
         {!hasFugitiveSelected && <FlyToCoords handleFly={handleFlyToCoordinates} />}
         {hasFugitiveSelected && (
