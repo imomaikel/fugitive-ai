@@ -52,7 +52,7 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected, initia
     onSuccess: (response) => {
       if (response?.success) {
         toast.success('Location of fugitive has been set');
-        router.replace('/platform/tracking/map');
+        router.replace('/platform/interactive-map');
       } else {
         errorToast('Error setting location');
       }
@@ -130,7 +130,7 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected, initia
                 <span className="text-2xl font-bold">
                   Click anywhere to set the location of the fugitive ({fugitiveSelected.fullName})
                 </span>
-                <Button variant="outline" onClick={() => router.replace('/platform/tracking/map')}>
+                <Button variant="outline" onClick={() => router.replace('/platform/interactive-map')}>
                   Cancel
                 </Button>
               </div>

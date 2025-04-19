@@ -151,7 +151,7 @@ const contentRenderer = (
           Close
         </Button>
         <Button asChild variant="ghost" onClick={handleClose} className="cursor-pointer">
-          <Link href={`/platform/tracking/map?fugitiveIdSelected=${fugitive.id}`} className="cursor-pointer">
+          <Link href={`/platform/interactive-map?fugitiveIdSelected=${fugitive.id}`} className="cursor-pointer">
             Change Location
           </Link>
         </Button>

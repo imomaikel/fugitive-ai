@@ -2,7 +2,7 @@ import type { IconType } from 'react-icons';
 import { FaHome } from 'react-icons/fa';
 import { RiCriminalFill } from 'react-icons/ri';
 
-import { Radar } from 'lucide-react';
+import { MapPinned } from 'lucide-react';
 
 export const SIDEBAR_TABS: {
   label: string;
@@ -34,14 +34,8 @@ export const SIDEBAR_TABS: {
     ],
   },
   {
-    label: 'Tracking',
-    Icon: Radar,
-    href: '/platform/tracking',
-    subMenus: [
-      {
-        href: '/platform/tracking/map',
-        label: 'Map',
-      },
-    ],
+    label: 'Interactive Map',
+    Icon: MapPinned,
+    href: '/platform/interactive-map',
   },
 ] as const;
