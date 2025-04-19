@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { notFound } from 'next/navigation';
 
 import PageWrapper from '@/app/(platform)/platform/_components/PageWrapper';

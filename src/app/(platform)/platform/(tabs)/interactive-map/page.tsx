@@ -1,13 +1,19 @@
+import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
 import { db } from '@/server/db';
 import { fugitives, users } from '@/server/db/schema';
 import { getUser } from '@/server/queries';
 import { and, eq, isNotNull, sql } from 'drizzle-orm';
+import { startCase } from 'lodash';
 import { z } from 'zod';
 
 import PageWrapper from '../../_components/PageWrapper';
 import CustomMap from './_components/CustomMap';
+
+export const metadata: Metadata = {
+  title: startCase('Interactive Map'),
+};
 
 const InteractiveMapPage = async ({ searchParams }: { searchParams: Promise<{ fugitiveIdSelected: string }> }) => {
   const user = await getUser();

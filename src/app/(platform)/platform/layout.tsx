@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -5,6 +6,13 @@ import { getUser } from '@/server/queries';
 
 import AppSidebar from '@/components/sidebar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+
+export const metadata: Metadata = {
+  title: {
+    default: 'Fugitive AI',
+    template: '%s - Fugitive AI',
+  },
+};
 
 interface PlatformLayoutProps {
   children: React.ReactNode;

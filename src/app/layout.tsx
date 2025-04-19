@@ -9,7 +9,8 @@ import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'Fugitive AI',
-  description: 'An AI assistant used to help you find your fugitive',
+  description:
+    'Fugitive AI is an AI-powered platform that assists in the identification, tracking, and location of fugitives. It uses cutting-edge artificial intelligence to provide accurate and reliable results.',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
