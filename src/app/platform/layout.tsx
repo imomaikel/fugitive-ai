@@ -14,8 +14,7 @@ const PlatformLayout: React.FC<PlatformLayoutProps> = async ({ children }) => {
   const [user, cookieStore] = await Promise.all([getUser(), cookies()]);
 
   if (!user?.id) {
-    // TODO: Redirect to login page
-    redirect('/');
+    redirect('/login');
   }
 
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';

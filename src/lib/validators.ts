@@ -34,3 +34,28 @@ export const ViewStateChangeValidator = z.object({
   zoom: z.number(),
 });
 export type ViewStateChangeSchema = z.infer<typeof ViewStateChangeValidator>;
+
+export const SignInValidator = z.object({
+  email: z.string().email(),
+  password: z.string().min(3),
+});
+export type SignInSchema = z.infer<typeof SignInValidator>;
+
+export const SignUpValidator = z
+  .object({
+    name: z.string().min(3),
+    email: z.string().email(),
+    password: z.string().min(3),
+    confirmPassword: z.string().min(3),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Passwords do not match',
+        path: ['confirmPassword'],
+      });
+    }
+    return true;
+  });
+export type SignUpSchema = z.infer<typeof SignUpValidator>;

@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { db } from '@/server/db';
-import { fugitives } from '@/server/db/schema';
+import { fugitives, users } from '@/server/db/schema';
 import { getUser } from '@/server/queries';
 import { and, eq, isNotNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
@@ -11,6 +11,10 @@ import CustomMap from './_components/CustomMap';
 
 const TrackingMapPage = async ({ searchParams }: { searchParams: Promise<{ fugitiveIdSelected: string }> }) => {
   const user = await getUser();
+  if (!user?.id) redirect('/login');
+
+  const [userData] = await db.select().from(users).where(eq(users.id, user.id)).limit(1);
+  if (!userData) redirect('/login');
 
   const fugitiveIdSelected = z
     .string()
@@ -62,9 +66,9 @@ const TrackingMapPage = async ({ searchParams }: { searchParams: Promise<{ fugit
             markers={fugitiveMarkers}
             fugitiveSelected={fugitiveSelected}
             initialMapView={{
-              latitude: user?.latitude ?? 26.58532999181257,
-              longitude: user?.longitude ?? 4.4511524248129035,
-              zoom: user?.zoom ?? 0.9435509986888801,
+              latitude: userData?.latitude ?? 26.58532999181257,
+              longitude: userData?.longitude ?? 4.4511524248129035,
+              zoom: userData?.zoom ?? 0.9435509986888801,
             }}
           />
         </div>

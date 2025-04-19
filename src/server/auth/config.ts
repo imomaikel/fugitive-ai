@@ -1,10 +1,15 @@
 import { type DefaultSession, type NextAuthConfig } from 'next-auth';
-import DiscordProvider from 'next-auth/providers/discord';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { env } from '@/env';
 import { db } from '@/server/db';
-import { accounts, sessions, users } from '@/server/db/schema';
+import { accounts, users } from '@/server/db/schema';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import bcrypt from 'bcryptjs';
+import { eq } from 'drizzle-orm';
+
+import { SignInValidator } from '@/lib/validators';
+
+import edgeConfig from './edge-config';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -18,9 +23,9 @@ declare module 'next-auth' {
       id: string;
       // ...other properties
       // role: UserRole;
-      latitude: number;
-      longitude: number;
-      zoom: number;
+      // latitude: number;
+      // longitude: number;
+      // zoom: number;
     } & DefaultSession['user'];
   }
 
@@ -37,26 +42,50 @@ declare module 'next-auth' {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider({
-      clientId: env.AUTH_DISCORD_ID,
-      clientSecret: env.AUTH_DISCORD_SECRET,
+    CredentialsProvider({
+      async authorize(credentials) {
+        const parsedData = SignInValidator.safeParse(credentials).data;
+        if (!parsedData) return null;
+
+        const { email, password } = parsedData;
+
+        const [userData] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+        if (!userData?.password) return null;
+
+        const passwordsMatch = await bcrypt.compare(password, userData.password);
+        if (!passwordsMatch) return null;
+
+        return {
+          email: userData.email,
+          name: userData.name,
+          id: userData.id,
+        };
+      },
     }),
+    ...edgeConfig.providers,
   ],
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
-    sessionsTable: sessions,
   }),
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
+  },
+  pages: {
+    signIn: '/login',
   },
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    session: async ({ session, token }) => {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+
+      return session;
+    },
+    jwt: async ({ token }) => {
+      if (!token.sub) return token;
+
+      return token;
+    },
   },
 } satisfies NextAuthConfig;

@@ -35,6 +35,7 @@ export const users = pgTable('user', (d) => ({
     .$defaultFn(() => crypto.randomUUID()),
 
   name: d.varchar({ length: 255 }),
+  password: d.varchar({ length: 255 }),
   image: d.varchar({ length: 255 }),
   emailVerified: d
     .timestamp({
@@ -71,21 +72,6 @@ export const accounts = pgTable(
     provider: d.varchar({ length: 255 }).notNull(),
   }),
   (t) => [primaryKey({ columns: [t.provider, t.providerAccountId] }), index('account_user_id_idx').on(t.userId)],
-);
-
-export const sessions = pgTable(
-  'session',
-  (d) => ({
-    sessionToken: d.varchar({ length: 255 }).notNull().primaryKey(),
-
-    userId: d
-      .varchar({ length: 255 })
-      .notNull()
-      .references(() => users.id),
-
-    expires: d.timestamp({ mode: 'date', withTimezone: true }).notNull(),
-  }),
-  (t) => [index('t_user_id_idx').on(t.userId)],
 );
 
 export const fugitives = pgTable('fugitive', (d) => ({
@@ -162,10 +148,6 @@ export const fugitiveLogs = pgTable('fugitive_log', (d) => ({
 /*****************/
 /*** Relations ***/
 /*****************/
-
-export const sessionsRelations = relations(sessions, ({ one }) => ({
-  user: one(users, { fields: [sessions.userId], references: [users.id] }),
-}));
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
