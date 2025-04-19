@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 
-import { auth } from '@/server/auth';
 import { db } from '@/server/db';
 import { fugitives } from '@/server/db/schema';
 import { getUser } from '@/server/queries';
