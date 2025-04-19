@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { RiCriminalFill } from 'react-icons/ri';
-import { Map, type MapRef, Marker, type MarkerEvent } from 'react-map-gl/maplibre';
+import { Map, type MapRef, Marker, type MarkerEvent, type ViewStateChangeEvent } from 'react-map-gl/maplibre';
 
 import { useTheme } from 'next-themes';
 
 import { api } from '@/trpc/react';
 import { useRouter } from '@bprogress/next/app';
+import { debounce } from 'lodash';
 import { Loader2 } from 'lucide-react';
 import type { MapMouseEvent } from 'maplibre-gl';
 import { toast } from 'sonner';
@@ -31,9 +32,14 @@ interface CustomMapProps {
     id: string;
     fullName: string;
   };
+  initialMapView?: {
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
 }
 
-const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
+const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected, initialMapView }) => {
   const [fugitiveIdToPreview, setFugitiveIdToPreview] = useState<string | null>(null);
   const mapRef = useRef<MapRef>(null);
   const { theme } = useTheme();
@@ -52,6 +58,8 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
       }
     },
   });
+
+  const { mutate: rememberMapView } = api.fugitive.rememberMapView.useMutation();
 
   const handleMarkerClick = (event: MarkerEvent<MouseEvent>, fugitiveId: string) => {
     event.originalEvent.stopPropagation();
@@ -77,18 +85,33 @@ const CustomMap: React.FC<CustomMapProps> = ({ markers, fugitiveSelected }) => {
     });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleMoveEnv = useCallback(
+    debounce((event: ViewStateChangeEvent) => {
+      const {
+        viewState: { latitude, longitude, zoom },
+      } = event;
+
+      rememberMapView({
+        latitude,
+        longitude,
+        zoom,
+      });
+    }, 500),
+    [],
+  );
+
   return (
     <>
       <Map
         ref={mapRef}
         initialViewState={{
-          latitude: 40,
-          longitude: -100,
-          zoom: 3.5,
           bearing: 0,
           pitch: 0,
+          ...initialMapView,
         }}
         dragPan={!isPending}
+        onMoveEnd={handleMoveEnv}
         cursor={isPending ? 'default' : 'grab'}
         onClick={handleMapClick}
         mapStyle={

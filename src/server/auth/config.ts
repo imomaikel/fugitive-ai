@@ -18,6 +18,9 @@ declare module 'next-auth' {
       id: string;
       // ...other properties
       // role: UserRole;
+      latitude: number;
+      longitude: number;
+      zoom: number;
     } & DefaultSession['user'];
   }
 

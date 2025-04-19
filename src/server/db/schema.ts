@@ -43,6 +43,10 @@ export const users = pgTable('user', (d) => ({
     })
     .default(sql`CURRENT_TIMESTAMP`),
 
+  latitude: d.doublePrecision(),
+  longitude: d.doublePrecision(),
+  zoom: d.doublePrecision(),
+
   email: d.varchar({ length: 255 }).notNull(),
 }));
 

@@ -2,7 +2,7 @@ import 'server-only';
 
 import { populateDatabase } from '@/data/example';
 import { captureTRPCError, createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
-import { fugitiveLogs, fugitives, locationHistory } from '@/server/db/schema';
+import { fugitiveLogs, fugitives, locationHistory, users } from '@/server/db/schema';
 import type { FugitiveLogInsert } from '@/server/db/types';
 import { TRPCError } from '@trpc/server';
 import { format } from 'date-fns';
@@ -10,7 +10,7 @@ import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { translateFugitiveColumnName } from '@/lib/utils';
-import { FugitiveValidator } from '@/lib/validators';
+import { FugitiveValidator, ViewStateChangeValidator } from '@/lib/validators';
 
 export const fugitiveRouter = createTRPCRouter({
   add: protectedProcedure.input(FugitiveValidator).mutation(async ({ input, ctx }) => {
@@ -227,6 +227,25 @@ export const fugitiveRouter = createTRPCRouter({
   populateExampleData: protectedProcedure.mutation(async () => {
     try {
       await populateDatabase();
+
+      return { success: true };
+    } catch (error) {
+      captureTRPCError(error, 'Error populating example data');
+    }
+  }),
+  rememberMapView: protectedProcedure.input(ViewStateChangeValidator).mutation(async ({ input, ctx }) => {
+    try {
+      const { latitude, longitude, zoom } = input;
+      const { db } = ctx;
+
+      await db
+        .update(users)
+        .set({
+          latitude,
+          longitude,
+          zoom,
+        })
+        .where(eq(users.id, ctx.session.user.id));
 
       return { success: true };
     } catch (error) {

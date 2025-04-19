@@ -27,3 +27,10 @@ export const FugitiveValidator = z.object({
   notes: z.string().nullable(),
 });
 export type FugitiveSchema = z.infer<typeof FugitiveValidator>;
+
+export const ViewStateChangeValidator = z.object({
+  latitude: z.number(),
+  longitude: z.number(),
+  zoom: z.number(),
+});
+export type ViewStateChangeSchema = z.infer<typeof ViewStateChangeValidator>;
