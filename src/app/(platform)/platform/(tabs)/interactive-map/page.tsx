@@ -6,7 +6,7 @@ import { getUser } from '@/server/queries';
 import { and, eq, isNotNull, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
-import PageWrapper from '../_components/PageWrapper';
+import PageWrapper from '../../_components/PageWrapper';
 import CustomMap from './_components/CustomMap';
 
 const InteractiveMapPage = async ({ searchParams }: { searchParams: Promise<{ fugitiveIdSelected: string }> }) => {

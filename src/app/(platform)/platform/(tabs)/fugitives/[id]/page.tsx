@@ -6,7 +6,7 @@ import { db } from '@/server/db';
 import { fugitives } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-import PageWrapper from '../../_components/PageWrapper';
+import PageWrapper from '../../../_components/PageWrapper';
 
 const FugitiveDetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const fugitiveId = (await params).id;

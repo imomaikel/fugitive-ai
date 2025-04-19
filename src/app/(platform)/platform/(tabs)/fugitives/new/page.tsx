@@ -1,4 +1,4 @@
-import PageWrapper from '../../_components/PageWrapper';
+import PageWrapper from '../../../_components/PageWrapper';
 import FugitiveForm from '../_components/FugitiveForm';
 
 const NewFugitivePage = async () => {

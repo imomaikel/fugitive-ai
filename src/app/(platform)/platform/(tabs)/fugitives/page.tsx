@@ -7,7 +7,7 @@ import { Plus } from 'lucide-react';
 import Loader from '@/components/Loader';
 import { Button } from '@/components/ui/button';
 
-import PageWrapper from '../_components/PageWrapper';
+import PageWrapper from '../../_components/PageWrapper';
 import FugitiveList from './_components/FugitiveList';
 
 const FugitivesPage = async () => {

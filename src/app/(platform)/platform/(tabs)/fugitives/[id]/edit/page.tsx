@@ -2,11 +2,11 @@ import React from 'react';
 
 import { notFound } from 'next/navigation';
 
+import PageWrapper from '@/app/(platform)/platform/_components/PageWrapper';
 import { db } from '@/server/db';
 import { fugitives } from '@/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-import PageWrapper from '../../../_components/PageWrapper';
 import FugitiveForm from '../../_components/FugitiveForm';
 
 const FugitiveEditPage = async ({ params }: { params: Promise<{ id: string }> }) => {
