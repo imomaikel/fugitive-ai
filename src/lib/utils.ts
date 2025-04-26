@@ -102,3 +102,7 @@ export const translateFugitiveColumnName = (column: keyof FugitiveRaw) => {
       return column;
   }
 };
+
+export const standardizeFilter = (filter: string) => {
+  return filter.toLowerCase().replaceAll(' ', '-').replaceAll(' ', '');
+};
