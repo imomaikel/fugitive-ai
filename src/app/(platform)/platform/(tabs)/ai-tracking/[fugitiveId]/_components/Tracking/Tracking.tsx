@@ -1,13 +1,21 @@
-import React from 'react';
+'use client';
 
 import type { FugitiveRaw } from '@/server/db/types';
+
+import PreviousLocations from './PreviousLocations';
 
 interface TrackingProps {
   fugitive: FugitiveRaw;
 }
 
 const Tracking: React.FC<TrackingProps> = ({ fugitive }) => {
-  return <div>Tracking {fugitive.fullName}</div>;
+  const fugitiveId = fugitive.id;
+
+  return (
+    <div>
+      <PreviousLocations fugitiveId={fugitiveId} />
+    </div>
+  );
 };
 
 export default Tracking;
