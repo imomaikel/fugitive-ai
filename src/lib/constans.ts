@@ -2,7 +2,7 @@ import type { IconType } from 'react-icons';
 import { FaHome } from 'react-icons/fa';
 import { RiCriminalFill } from 'react-icons/ri';
 
-import { MapPinned } from 'lucide-react';
+import { Brain, MapPinned } from 'lucide-react';
 
 export const SIDEBAR_TABS: {
   label: string;
@@ -37,5 +37,10 @@ export const SIDEBAR_TABS: {
     label: 'Interactive Map',
     Icon: MapPinned,
     href: '/platform/interactive-map',
+  },
+  {
+    label: 'AI Tracking',
+    Icon: Brain,
+    href: '/platform/ai-tracking',
   },
 ] as const;

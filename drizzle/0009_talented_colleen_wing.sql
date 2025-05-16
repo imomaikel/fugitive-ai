@@ -1,0 +1,1 @@
+ALTER TABLE "fugitive" ADD COLUMN "whilePredicting" boolean DEFAULT false NOT NULL;

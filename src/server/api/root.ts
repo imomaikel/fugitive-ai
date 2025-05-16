@@ -1,6 +1,8 @@
 import { fugitiveRouter } from '@/server/api/routers/fugitive';
 import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
 
+import { trackingRouter } from './routers/tracking';
+
 /**
  * This is the primary router for your server.
  *
@@ -8,6 +10,7 @@ import { createCallerFactory, createTRPCRouter } from '@/server/api/trpc';
  */
 export const appRouter = createTRPCRouter({
   fugitive: fugitiveRouter,
+  tracking: trackingRouter,
 });
 
 // export type definition of API

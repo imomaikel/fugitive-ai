@@ -7,7 +7,7 @@ import { startCase } from 'lodash';
 import PageWrapper from '../_components/PageWrapper';
 
 export const metadata: Metadata = {
-  title: startCase('Home '),
+  title: startCase('Home'),
 };
 
 const PlatformPage = () => {

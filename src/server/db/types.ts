@@ -13,6 +13,7 @@ const LocationHistorySchema = createSelectSchema(locationHistory);
 export type UserRaw = z.infer<typeof UserSchema>;
 export type FugitiveRaw = z.infer<typeof FugitiveSchema>;
 export type FugitiveLogRaw = z.infer<typeof FugitiveLogsSchema>;
+export type LocationHistoryRaw = z.infer<typeof LocationHistorySchema>;
 
 // Insert
 export const FugitiveInsertSchema = createInsertSchema(fugitives).omit({ id: true, createdAt: true, updatedAt: true });
