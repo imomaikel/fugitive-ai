@@ -80,6 +80,14 @@ export const trackingRouter = createTRPCRouter({
           return { success: false, message: 'No previous locations found. Add at least one location.' };
         }
 
+        if (fugitive.whilePredicting) {
+          return {
+            success: false,
+            message:
+              'Please wait until the current prediction is finished. It might be triggered by another user. It should take around one minute to complete.',
+          };
+        }
+
         const mostRecentPrediction = previousPredictions[0];
         if (mostRecentPrediction) {
           const diff = differenceInMinutes(new Date(), mostRecentPrediction.createdAt);
