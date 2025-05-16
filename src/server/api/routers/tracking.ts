@@ -1,3 +1,4 @@
+import { sendPredictionNotification } from '@/server/actions/prediction';
 import { ai } from '@/server/ai';
 import { PredictionSchema } from '@/server/ai/schemas';
 import { fugitives, locationHistory, predictionLogs } from '@/server/db/schema';
@@ -94,7 +95,7 @@ export const trackingRouter = createTRPCRouter({
           })
           .where(eq(fugitives.id, fugitiveId));
 
-        const predictionRequest = await ai.predict({
+        const predictionProps: Parameters<typeof ai.predict>[0] = {
           appearance: fugitive.appearance || 'Unknown',
           gender: fugitive.gender || 'Unknown',
           nationality: fugitive.nationality || 'Unknown',
@@ -105,7 +106,9 @@ export const trackingRouter = createTRPCRouter({
             lon: loc.longitude ?? 'Unknown longitude',
             date: loc.createdAt.toISOString(),
           })),
-        });
+        };
+
+        const predictionRequest = await ai.predict(predictionProps);
 
         const choice = predictionRequest.choices[0];
 
@@ -132,6 +135,11 @@ export const trackingRouter = createTRPCRouter({
           country: prediction.country,
           location: prediction.location,
           reasoning: prediction.reasoning,
+        });
+
+        await sendPredictionNotification(predictionProps, prediction, fugitive.fullName).catch((error) => {
+          console.log('Failed to send prediction notification');
+          console.log(error);
         });
 
         return { success: true, prediction };

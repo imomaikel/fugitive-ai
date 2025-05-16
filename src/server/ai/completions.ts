@@ -20,6 +20,17 @@ interface GetCompletionsParams {
   }[];
 }
 
+export const transformKnownLocations = (
+  lastKnownLocations: Parameters<typeof getCompletions>[0]['lastKnownLocations'],
+) => {
+  return lastKnownLocations
+    .map(
+      (loc, idx) =>
+        `${idx + 1}. ${loc.placeName} (Lat: ${loc.lat}, Lon: ${loc.lon}) - Seen on ${loc.date}. Notes: ${loc.context}`,
+    )
+    .join('\n');
+};
+
 export const getCompletions = ({
   appearance,
   gender,
@@ -33,12 +44,7 @@ export const getCompletions = ({
   const year = dateNow.getFullYear();
   const dateNowFormatted = `${month} ${day}, ${year}`;
 
-  const locationHistoryText = lastKnownLocations
-    .map(
-      (loc, idx) =>
-        `${idx + 1}. ${loc.placeName} (Lat: ${loc.lat}, Lon: ${loc.lon}) - Seen on ${loc.date}. Notes: ${loc.context}`,
-    )
-    .join('\n');
+  const locationHistoryText = transformKnownLocations(lastKnownLocations);
 
   return {
     messages: [

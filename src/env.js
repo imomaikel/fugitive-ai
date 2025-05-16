@@ -13,6 +13,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     OPEN_AI_API_KEY: z.string(),
+    WEBHOOK_URL: z.string(),
   },
 
   /**
@@ -35,6 +36,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
+    WEBHOOK_URL: process.env.WEBHOOK_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
