@@ -35,13 +35,13 @@ const PreviousLocations: React.FC<PreviousLocationsProps> = ({ fugitiveId }) => 
   const noPreviousLocations = previousLocations?.length === 0 && !isLoading;
 
   return (
-    <Card className="max-w-md">
+    <Card className="h-full w-full">
       <CardHeader>
         <CardTitle>Previous Locations</CardTitle>
         <CardDescription>The previous locations of this fugitive</CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[300px] pr-4">
+        <ScrollArea className="max-h-[300px] overflow-y-auto">
           {isLoading && <Loader className="size-16" />}
           {noPreviousLocations && <p className="text-muted-foreground">No previous locations found</p>}
           <ul className="marker:text-primary list-disc space-y-2 pl-4">
