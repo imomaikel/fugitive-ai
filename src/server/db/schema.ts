@@ -98,6 +98,7 @@ export const fugitives = pgTable('fugitive', (d) => ({
   longitude: d.doublePrecision(),
 
   status: FugitiveStatusEnum().notNull(),
+  whilePredicting: d.boolean().notNull().default(false),
 
   createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
   updatedAt: d
@@ -145,6 +146,27 @@ export const fugitiveLogs = pgTable('fugitive_log', (d) => ({
   createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
 }));
 
+export const predictionLogs = pgTable('prediction_log', (d) => ({
+  id: d
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
+  fugitiveId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => fugitives.id, { onDelete: 'set null' }),
+  userId: d.varchar({ length: 255 }).references(() => users.id, { onDelete: 'set null' }),
+
+  city: d.varchar({ length: 255 }).notNull(),
+  country: d.varchar({ length: 255 }).notNull(),
+  location: d.varchar({ length: 255 }).notNull(),
+  reasoning: d.text().notNull(),
+
+  createdAt: d.timestamp({ mode: 'date', withTimezone: true }).defaultNow().notNull(),
+}));
+
 /*****************/
 /*** Relations ***/
 /*****************/
@@ -162,6 +184,7 @@ export const fugitivesRelations = relations(fugitives, ({ one, many }) => ({
   addedByUser: one(users, { fields: [fugitives.addedByUserId], references: [users.id] }),
   logs: many(fugitiveLogs),
   locationHistory: many(locationHistory),
+  predictionLogs: many(predictionLogs),
 }));
 
 export const fugitiveLogsRelations = relations(fugitiveLogs, ({ one }) => ({
@@ -171,4 +194,9 @@ export const fugitiveLogsRelations = relations(fugitiveLogs, ({ one }) => ({
 
 export const locationHistoryRelations = relations(locationHistory, ({ one }) => ({
   fugitive: one(fugitives, { fields: [locationHistory.fugitiveId], references: [fugitives.id] }),
+}));
+
+export const predictionLogsRelations = relations(predictionLogs, ({ one }) => ({
+  fugitive: one(fugitives, { fields: [predictionLogs.fugitiveId], references: [fugitives.id] }),
+  user: one(users, { fields: [predictionLogs.userId], references: [users.id] }),
 }));
