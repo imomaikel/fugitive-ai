@@ -6,7 +6,7 @@ import { fugitiveLogs, fugitives, locationHistory, users } from '@/server/db/sch
 import type { FugitiveLogInsert } from '@/server/db/types';
 import { TRPCError } from '@trpc/server';
 import { format } from 'date-fns';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { translateFugitiveColumnName } from '@/lib/utils';
@@ -250,6 +250,28 @@ export const fugitiveRouter = createTRPCRouter({
       return { success: true };
     } catch (error) {
       captureTRPCError(error, 'Error populating example data');
+    }
+  }),
+  getAllLogs: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const { db } = ctx;
+
+      const logs = await db
+        .select({
+          id: fugitiveLogs.id,
+          message: fugitiveLogs.message,
+          createdAt: fugitiveLogs.createdAt,
+          fugitiveName: fugitives.fullName,
+          assignedTo: users.name,
+        })
+        .from(fugitiveLogs)
+        .leftJoin(fugitives, eq(fugitives.id, fugitiveLogs.fugitiveId))
+        .leftJoin(users, eq(users.id, fugitives.addedByUserId))
+        .orderBy(desc(fugitiveLogs.createdAt));
+
+      return { logs };
+    } catch (error) {
+      captureTRPCError(error, 'Error getting all logs');
     }
   }),
 });
