@@ -1,7 +1,7 @@
 import { sendPredictionNotification } from '@/server/actions/prediction';
 import { ai } from '@/server/ai';
 import { PredictionSchema } from '@/server/ai/schemas';
-import { fugitives, locationHistory, predictionLogs } from '@/server/db/schema';
+import { fugitiveLogs, fugitives, locationHistory, predictionLogs } from '@/server/db/schema';
 import { differenceInMinutes } from 'date-fns';
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
@@ -43,9 +43,24 @@ export const trackingRouter = createTRPCRouter({
         const { fugitiveId, locationId } = input;
         const { db } = ctx;
 
-        await db
+        const [deletedLocation] = await db
           .delete(locationHistory)
-          .where(and(eq(locationHistory.fugitiveId, fugitiveId), eq(locationHistory.id, locationId)));
+          .where(and(eq(locationHistory.fugitiveId, fugitiveId), eq(locationHistory.id, locationId)))
+          .returning();
+
+        let locationName = deletedLocation?.place || null;
+
+        if (!locationName && deletedLocation?.latitude && deletedLocation.longitude) {
+          locationName = `LAT: ${deletedLocation.latitude}, LNG: ${deletedLocation.longitude}`;
+        } else {
+          locationName = 'Unknown location';
+        }
+
+        await db.insert(fugitiveLogs).values({
+          fugitiveId,
+          userId: ctx.session.user.id,
+          message: `Deleted location "${locationName}"`,
+        });
 
         return { success: true };
       } catch (error) {
@@ -143,6 +158,12 @@ export const trackingRouter = createTRPCRouter({
           country: prediction.country,
           location: prediction.location,
           reasoning: prediction.reasoning,
+        });
+
+        await db.insert(fugitiveLogs).values({
+          fugitiveId,
+          userId: ctx.session.user.id,
+          message: `AI predicted ${prediction.city}, ${prediction.country} with reasoning "${prediction.reasoning.substring(0, 24)}..."`,
         });
 
         await sendPredictionNotification(predictionProps, prediction, fugitive.fullName).catch((error) => {
