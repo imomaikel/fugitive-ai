@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { errorToast } from '@/lib/utils';
 
 import { Button } from '../ui/button';
+import { SidebarMenuButton } from '../ui/sidebar';
 
 const Populate = () => {
   const [toastId, setToastId] = useState<string | number | null>(null);
@@ -49,15 +50,14 @@ const Populate = () => {
   };
 
   return (
-    <Button
-      className="hover:text-primary w-full cursor-pointer"
-      variant="ghost"
+    <SidebarMenuButton
+      className="hover:text-primary flex w-full cursor-pointer justify-center text-center"
       disabled={isPending}
       onClick={handleClick}
     >
       <ImMagicWand />
       <span>Add example data</span>
-    </Button>
+    </SidebarMenuButton>
   );
 };
 
