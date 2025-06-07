@@ -117,7 +117,7 @@ export const locationHistory = pgTable('location_history', (d) => ({
 
   latitude: d.doublePrecision(),
   longitude: d.doublePrecision(),
-  place: d.text(),
+  place: d.text().notNull(),
   context: d.text(),
 
   fugitiveId: d

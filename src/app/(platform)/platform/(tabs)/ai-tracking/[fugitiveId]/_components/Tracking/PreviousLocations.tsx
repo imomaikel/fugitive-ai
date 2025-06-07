@@ -9,6 +9,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { cn, errorToast, relativeDate } from '@/lib/utils';
 
+import AddNewLocation from './AddNewLocation';
+
 interface PreviousLocationsProps {
   fugitiveId: string;
 }
@@ -35,39 +37,46 @@ const PreviousLocations: React.FC<PreviousLocationsProps> = ({ fugitiveId }) => 
   const noPreviousLocations = previousLocations?.length === 0 && !isLoading;
 
   return (
-    <Card className="h-full w-full">
-      <CardHeader>
-        <CardTitle>Previous Locations</CardTitle>
-        <CardDescription>The previous locations of this fugitive</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="max-h-[300px] overflow-y-auto">
-          {isLoading && <Loader className="size-16" />}
-          {noPreviousLocations && <p className="text-muted-foreground">No previous locations found</p>}
-          <ul className="marker:text-primary list-disc space-y-2 pl-4">
-            {previousLocations?.map((location) => (
-              <li key={location.id}>
-                <p>{location.place}</p>
-                <div className="flex flex-col">
-                  <span className="text-sm">{location.context}</span>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground text-xs">{relativeDate(location.createdAt)}</span>
-                    <span
-                      role="button"
-                      aria-label="click to delete"
-                      className={cn('text-muted-foreground text-xs select-none', !isDeleting && 'cursor-pointer')}
-                      onDoubleClick={() => handleDeleteLocation(location.id)}
-                    >
-                      Double click to delete
-                    </span>
+    <>
+      <Card className="h-full w-full">
+        <CardHeader>
+          <div className="flex w-full items-center justify-between">
+            <div>
+              <CardTitle>Previous Locations</CardTitle>
+              <CardDescription>The previous locations of this fugitive</CardDescription>
+            </div>
+            <AddNewLocation refetch={refetch} fugitiveId={fugitiveId} />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="max-h-[300px] overflow-y-auto">
+            {isLoading && <Loader className="size-16" />}
+            {noPreviousLocations && <p className="text-muted-foreground">No previous locations found</p>}
+            <ul className="marker:text-primary list-disc space-y-2 pl-4">
+              {previousLocations?.map((location) => (
+                <li key={location.id}>
+                  <p>{location.place}</p>
+                  <div className="flex flex-col">
+                    <span className="text-sm">{location.context}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground text-xs">{relativeDate(location.createdAt)}</span>
+                      <span
+                        role="button"
+                        aria-label="click to delete"
+                        className={cn('text-muted-foreground text-xs select-none', !isDeleting && 'cursor-pointer')}
+                        onDoubleClick={() => handleDeleteLocation(location.id)}
+                      >
+                        Double click to delete
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </>
   );
 };
 

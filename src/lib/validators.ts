@@ -59,3 +59,12 @@ export const SignUpValidator = z
     return true;
   });
 export type SignUpSchema = z.infer<typeof SignUpValidator>;
+
+export const AddNewLocationValidator = z.object({
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  place: z.string().min(6),
+  context: z.string().optional(),
+  fugitiveId: z.string().min(1),
+});
+export type AddNewLocationSchema = z.infer<typeof AddNewLocationValidator>;

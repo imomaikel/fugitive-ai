@@ -6,6 +6,8 @@ import { differenceInMinutes } from 'date-fns';
 import { and, desc, eq } from 'drizzle-orm';
 import { z } from 'zod';
 
+import { AddNewLocationValidator } from '@/lib/validators';
+
 import { captureTRPCError, createTRPCRouter, protectedProcedure } from '../trpc';
 
 export const trackingRouter = createTRPCRouter({
@@ -215,4 +217,27 @@ export const trackingRouter = createTRPCRouter({
         captureTRPCError(error, 'Error getting previous predictions');
       }
     }),
+  addNewLocation: protectedProcedure.input(AddNewLocationValidator).mutation(async ({ ctx, input }) => {
+    try {
+      const { db } = ctx;
+
+      await db.insert(locationHistory).values({
+        latitude: input.latitude || undefined,
+        longitude: input.longitude || undefined,
+        place: input.place,
+        context: input.context || undefined,
+        fugitiveId: input.fugitiveId,
+      });
+
+      await db.insert(fugitiveLogs).values({
+        fugitiveId: input.fugitiveId,
+        userId: ctx.session.user.id,
+        message: `Added new location "${input.place}" to fugitive`,
+      });
+
+      return { success: true };
+    } catch (error) {
+      captureTRPCError(error, 'Error adding new location');
+    }
+  }),
 });
