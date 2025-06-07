@@ -1,7 +1,5 @@
 import { RiCriminalFill } from 'react-icons/ri';
 
-import Image from 'next/image';
-
 import type { FugitiveRaw } from '@/server/db/types';
 import { AlertTriangle, Calendar, Globe, User } from 'lucide-react';
 

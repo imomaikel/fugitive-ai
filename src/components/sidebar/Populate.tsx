@@ -9,7 +9,6 @@ import { toast } from 'sonner';
 
 import { errorToast } from '@/lib/utils';
 
-import { Button } from '../ui/button';
 import { SidebarMenuButton } from '../ui/sidebar';
 
 const Populate = () => {
