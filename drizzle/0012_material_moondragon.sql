@@ -1,0 +1,1 @@
+ALTER TABLE "location_history" ALTER COLUMN "place" DROP NOT NULL;
