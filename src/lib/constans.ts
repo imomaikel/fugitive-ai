@@ -1,9 +1,8 @@
 import type { IconType } from 'react-icons';
-import { FaHome, FaMapMarkedAlt} from 'react-icons/fa';
-import { RiCriminalFill, RiMapPinLine } from 'react-icons/ri';
+import { FaHome, FaMapMarkedAlt } from 'react-icons/fa';
+import { RiCriminalFill } from 'react-icons/ri';
 
-
-import { Brain, FileText, MapPinned } from 'lucide-react';
+import { Brain, FileText } from 'lucide-react';
 
 export const SIDEBAR_TABS: {
   label: string;
