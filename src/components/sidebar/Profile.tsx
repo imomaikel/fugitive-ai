@@ -94,19 +94,13 @@ const Profile: React.FC<ProfileProps> = ({ user }) => {
                   onClick={(event) => handleThemeChange(event, 'light')}
                   checked={theme === 'light'}
                 >
-                  Light
+                  Light (unstable)
                 </DropdownMenuCheckboxItem>
                 <DropdownMenuCheckboxItem
                   onClick={(event) => handleThemeChange(event, 'dark')}
                   checked={theme === 'dark'}
                 >
                   Dark
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  onClick={(event) => handleThemeChange(event, 'system')}
-                  checked={theme === 'system'}
-                >
-                  System
                 </DropdownMenuCheckboxItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>

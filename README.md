@@ -6,25 +6,25 @@ FugitiveAI is a web application designed to assist analysts, investigators, and 
 
 ## 🔍 What It Does
 
-- Store and manage detailed fugitive profiles  
-- Track last known locations (with coordinates and dates)  
-- Use AI to predict the most likely current location based on movement patterns  
-- Visualize predictions and sightings on a dynamic map  
-- Filter fugitives by status, nationality, danger level, and more  
+- Store and manage detailed fugitive profiles
+- Track last known locations (with coordinates and dates)
+- Use AI to predict the most likely current location based on movement patterns
+- Visualize predictions and sightings on a dynamic map
+- Filter fugitives by status, nationality, danger level, and more
 - Allow authorized users to contribute sightings or notes
 
 ---
 
 ## 🧠 Tech Stack
 
-| Layer           | Tech                                     |
-|----------------|-------------------------------------------|
-| Frontend       | Next.js, TypeScript, Tailwind CSS         |
-| Backend        | Next.js, Drizzle ORM, PostgreSQL          |
-| Authentication | Auth.js                                   |
-| AI Integration | OpenAI GPT-4 (Chat Completion API)        |
-| Mapping        | MapLibre                                  |
-| Hosting        | Vercel                                    |
+| Layer          | Tech                               |
+| -------------- | ---------------------------------- |
+| Frontend       | Next.js, TypeScript, Tailwind CSS  |
+| Backend        | Next.js, Drizzle ORM, PostgreSQL   |
+| Authentication | Auth.js                            |
+| AI Integration | OpenAI GPT-4 (Chat Completion API) |
+| Mapping        | MapLibre                           |
+| Hosting        | Vercel                             |
 
 ---
 
@@ -84,10 +84,16 @@ Visit [http://localhost:3000](http://localhost:3000) to see the app in action.
 
 ---
 
-
 ## 🤝 Contributing
 
 Pull requests and feedback are welcome! If you'd like to suggest a feature or report a bug, feel free to open an issue.
+
+---
+
+## 📝 TODOs
+
+- Fix missing light theme styles in some pages/components
+- Enable system theme detection
 
 ---
 

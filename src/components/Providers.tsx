@@ -14,7 +14,7 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
     <ProgressProvider height="2px" color="#7f22fe" options={{ showSpinner: false }} shallowRouting>
       <TRPCReactProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           {children}
         </ThemeProvider>
         <Toaster position="top-center" offset={20} />
