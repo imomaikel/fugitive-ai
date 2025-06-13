@@ -1,10 +1,20 @@
 'use client';
+'use no memo';
+
+import React from 'react';
 
 import Link from 'next/link';
 
 import type { FugitiveRaw } from '@/server/db/types';
-import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { CircleHelp, MoreHorizontal } from 'lucide-react';
+import {
+  type ColumnDef,
+  type SortingState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { ArrowUpDown, CircleHelp, MoreHorizontal } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,25 +33,37 @@ import { getFugitiveStatusDescription, relativeDate } from '@/lib/utils';
 export const columns: ColumnDef<FugitiveRaw>[] = [
   {
     accessorKey: 'fullName',
-    header: 'Full Name',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Full Name
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: 'gender',
-    header: 'Gender',
-    cell: ({ row }) => {
-      return (
-        <Badge variant="secondary" className="capitalize">
-          {row.original.gender}
-        </Badge>
-      );
-    },
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Gender
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Badge variant="secondary" className="capitalize">
+        {row.original.gender}
+      </Badge>
+    ),
   },
   {
     accessorKey: 'dangerLevel',
-    header: 'Danger Level',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Danger Level
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const value = row.original.dangerLevel;
-
       return (
         <Badge variant={value === 'extreme' || value === 'high' ? 'destructive' : 'secondary'} className="uppercase">
           {value}
@@ -51,17 +73,21 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Status
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const value = row.original.status;
-
       return (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Badge className="cursor-default uppercase">
                 {value}
-                <CircleHelp />
+                <CircleHelp className="ml-1 h-3 w-3" />
               </Badge>
             </TooltipTrigger>
             <TooltipContent>{getFugitiveStatusDescription(value)}</TooltipContent>
@@ -72,32 +98,47 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
   },
   {
     accessorKey: 'identifyNumber',
-    header: 'ID Number',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        ID Number
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: 'nationality',
-    header: 'Nationality',
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Nationality
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: 'updatedAt',
-    header: 'Updated At',
-    cell: ({ row }) => {
-      return <span>{relativeDate(row.original.updatedAt)}</span>;
-    },
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Updated At
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <span>{relativeDate(row.original.updatedAt)}</span>,
   },
   {
     accessorKey: 'createdAt',
-    header: 'Created At',
-    cell: ({ row }) => {
-      return <span>{relativeDate(row.original.createdAt)}</span>;
-    },
+    header: ({ column }) => (
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Created At
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <span>{relativeDate(row.original.createdAt)}</span>,
   },
   {
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
       const fugitiveId = row.original.id;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -126,10 +167,17 @@ export const columns: ColumnDef<FugitiveRaw>[] = [
 ];
 
 const Fugitives: React.FC<{ fugitives: FugitiveRaw[] }> = ({ fugitives }) => {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
   const table = useReactTable({
     data: fugitives,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: {
+      sorting,
+    },
   });
 
   return (
@@ -139,13 +187,11 @@ const Fugitives: React.FC<{ fugitives: FugitiveRaw[] }> = ({ fugitives }) => {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
