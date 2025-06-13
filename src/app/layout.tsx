@@ -1,6 +1,8 @@
 import { type Metadata } from 'next';
 import { Quicksand } from 'next/font/google';
 
+import { Analytics } from '@vercel/analytics/next';
+
 import Providers from '@/components/Providers';
 
 import { cn } from '@/lib/utils';
@@ -29,6 +31,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
     <html lang="en" suppressHydrationWarning className={cn('scroll-smooth', quickSand.className)}>
       <body>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
